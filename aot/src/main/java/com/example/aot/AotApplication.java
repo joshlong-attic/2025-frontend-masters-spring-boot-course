@@ -41,9 +41,9 @@ class SerializableBeanFactoryInitializationAotProcessor implements BeanFactoryIn
 
     @Override
     public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-        return (generationContext,  _ ) -> {
+        return (generationContext, _) -> {
             var hints = generationContext.getRuntimeHints();
-            for (var beanName : beanFactory.getBeanDefinitionNames( )) {
+            for (var beanName : beanFactory.getBeanDefinitionNames()) {
                 var type = beanFactory.getType(beanName);
                 if (Serializable.class.isAssignableFrom(type)) {
                     System.out.println("registering serializable type " + type);
