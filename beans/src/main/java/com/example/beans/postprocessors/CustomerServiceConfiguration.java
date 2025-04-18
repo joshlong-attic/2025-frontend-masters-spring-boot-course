@@ -1,4 +1,4 @@
-package com.example.beans.beanpostprocessors;
+package com.example.beans.postprocessors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,6 +13,11 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 class CustomerServiceConfiguration {
+
+    @Bean
+    static LoggingBeanFactoryPostProcessor loggingBeanFactoryPostProcessor  () {
+        return new LoggingBeanFactoryPostProcessor ();
+    }
 
     @Bean
     static LoggingBeanPostProcessor loggingBeanPostProcessor() {

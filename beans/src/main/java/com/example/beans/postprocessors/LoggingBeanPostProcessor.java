@@ -1,4 +1,4 @@
-package com.example.beans.beanpostprocessors;
+package com.example.beans.postprocessors;
 
 import com.example.beans.Loggable;
 import com.example.beans.LoggableProxyMaker;

@@ -8,5 +8,5 @@
 * `springframework` - Spring Framework
 * `componentscan` - Spring Framework component scanning 
 * `lifecycle` - Spring Framework's `InitializingBean`, `DisposableBean`, `@PreDestroy`, `@PostConstruct`, etc. 
-* `beanpostprocessors` - Spring Framework `BeanPostProcessor`
+* `beanpostprocessors` - Spring Framework `BeanFactoryPostProcessor` and `BeanPostProcessor`
 * `springboot` - Spring Framework `BeanPostProcessor`
