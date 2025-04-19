@@ -17,7 +17,7 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 12:45	Scalability
 13:30	Cloud Native Spring (and Kubernetes)
 14:30	Data and Batch
-15:30 	Web Programming (MVC, reactive, Thymeleaf, HTMX, REST, HATEOAS)
+15:30 	Web Programming (MVC, Thymeleaf, HTMX, REST, HATEOAS)
 
 ## Day 2
 

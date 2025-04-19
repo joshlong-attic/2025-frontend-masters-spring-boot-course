@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "UsersProto" ;
+option java_package = "com.example.web.grpc";
+
+
+message User {
+  int32  id = 1;
+  string name = 2;
+  string username = 3;
+  string email = 4;
+}
+
+message Users {
+  repeated User users = 1;
+}
+
+service UsersService {
+  rpc All (google.protobuf.Empty) returns (Users){}
+}
