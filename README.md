@@ -9,22 +9,22 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 
 ## Day 1
 
-09:30	Desk check
-10:00	Data oriented programming on the JVM
-10:30	Beans
-11:00	AOT and GraalVM
+09:30	(X) Desk check
+10:00	(X) Data oriented programming on the JVM
+10:30	(X) Beans
+11:00	(X) AOT and GraalVM
 12:00 	(Lunch)
-12:45	Scalability
-13:30	Cloud Native Spring (and Kubernetes)
-14:30	Data and Batch
-15:30 	Web Programming (MVC, Thymeleaf, REST, HATEOAS)
+12:45	(X) Scalability
+13:30	(X) Cloud Native Spring (and Kubernetes)
+14:30	(X) Data and Batch
+15:30 	(X) Web Programming (MVC, Thymeleaf, REST, HATEOAS)
 
 ## Day 2
 
-09:30	Web Programming (cont’d) (RestClient, declarative HTTP interfaces, GraphQL, gRPC)
+09:30	(X) Web Programming (cont’d) (RestClient, declarative HTTP interfaces, GraphQL, gRPC)
 10:30	Messaging and Integration
-11:30	Architecting for Modularity
+11:30	(X) Architecting for Modularity
 12:30	(Lunch)
-13:30	AI
+13:30	(X) AI
 14:30	Microservices
 15:30	Security
