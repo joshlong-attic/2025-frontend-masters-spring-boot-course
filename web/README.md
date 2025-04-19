@@ -5,8 +5,7 @@
 * don't forget `spring.threads.virtual.enabled=true`! 
 * `RestClient`
 * declarative clients
-* MVC
-* Thymeleaf + HTMX
+* MVC (Thymeleaf)
 * HTTP + JSON (but, notably, _not_ REST!)
 * hypermedia and HATEOAS
 * GraphQL 
