@@ -10,3 +10,5 @@
 * `lifecycle` - Spring Framework's `InitializingBean`, `DisposableBean`, `@PreDestroy`, `@PostConstruct`, etc. 
 * `beanpostprocessors` - Spring Framework `BeanFactoryPostProcessor` and `BeanPostProcessor`
 * `springboot` - Spring Framework `BeanPostProcessor`
+* `configuration` - look at `Environment`, `@Value`, and `@ConfigurationProperties`
+* `events` - there are a ton of events to which you can listen...
