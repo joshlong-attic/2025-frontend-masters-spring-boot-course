@@ -1,0 +1,8 @@
+{
+  "orderId": "PO-1009",
+  "country": "France",
+  "lineItems": [
+    { "sku": "SKU-015", "productName": "Smart Home Plug", "quantity": 4, "unitPrice": 15.00 }
+  ],
+  "total": 60.00
+}

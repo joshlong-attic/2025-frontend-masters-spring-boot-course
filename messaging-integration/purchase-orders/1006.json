@@ -1,0 +1,8 @@
+{
+  "orderId": "PO-1006",
+  "country": "India",
+  "lineItems": [
+    { "sku": "SKU-010", "productName": "Wireless Charger", "quantity": 3, "unitPrice": 19.99 }
+  ],
+  "total": 59.97
+}

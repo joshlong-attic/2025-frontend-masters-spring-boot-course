@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1002",
+  "country": "Germany",
+  "lineItems": [
+    { "sku": "SKU-003", "productName": "Mechanical Keyboard", "quantity": 1, "unitPrice": 89.99 },
+    { "sku": "SKU-004", "productName": "Ergonomic Mouse", "quantity": 1, "unitPrice": 59.99 }
+  ],
+  "total": 149.98
+}

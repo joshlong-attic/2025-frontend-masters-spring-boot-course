@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1007",
+  "country": "UK",
+  "lineItems": [
+    { "sku": "SKU-011", "productName": "Smartwatch Band", "quantity": 2, "unitPrice": 14.99 },
+    { "sku": "SKU-012", "productName": "Fitness Tracker", "quantity": 1, "unitPrice": 79.99 }
+  ],
+  "total": 109.97
+}

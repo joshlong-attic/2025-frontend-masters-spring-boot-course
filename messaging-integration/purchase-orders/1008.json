@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1008",
+  "country": "Australia",
+  "lineItems": [
+    { "sku": "SKU-013", "productName": "Portable Projector", "quantity": 1, "unitPrice": 229.99 },
+    { "sku": "SKU-014", "productName": "HDMI Cable", "quantity": 2, "unitPrice": 12.49 }
+  ],
+  "total": 254.97
+}

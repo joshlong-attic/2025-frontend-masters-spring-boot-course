@@ -28,73 +28,64 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-
 @SpringBootApplication
 public class EipApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(EipApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(EipApplication.class, args);
+	}
 
+	@Bean
+	DirectChannelSpec orders() {
+		return MessageChannels.direct();
+	}
 
-    @Bean
-    DirectChannelSpec orders() {
-        return MessageChannels.direct();
-    }
+	@Bean
+	IntegrationFlow filesIntegrationFlow(MessageChannel orders,
+			@Value("file://${HOME}/Desktop/purchase-orders") File inputDir) {
+		var files = Files.inboundAdapter(inputDir).autoCreateDirectory(true);
+		return IntegrationFlow.from(files).channel(orders).get();
+	}
 
-    @Bean
-    IntegrationFlow filesIntegrationFlow(MessageChannel orders, @Value("file://${HOME}/Desktop/purchase-orders") File inputDir) {
-        var files = Files
-                .inboundAdapter(inputDir)
-                .autoCreateDirectory(true);
-        return IntegrationFlow
-                .from(files)
-                .channel(orders)
-                .get();
-    }
+	// 1. read .json files from
+	// ${HOME}/Desktop/frontend-masters-spring-boot-course/messaging-integration/purchase-orders/
+	// 1. read purchase-orders from an http inbound endpoint in tomcat
+	// 1. connect via a MessageChannel
+	// 2. transform into PurchaseOrder objects
+	// 5. split PurchaseOrder objects into PurchaseOrderLineItems
+	// 6. for each lineitem, enrich with whether the order is domestic or international
+	// 7. 'ship' it
+	// 8. aggregate the results
+	// 9. write to RMQ
 
-// 1. read .json files from ${HOME}/Desktop/frontend-masters-spring-boot-course/messaging-integration/purchase-orders/
-// 1. read purchase-orders from an http inbound endpoint in tomcat
-// 1. connect via a MessageChannel
-// 2. transform into PurchaseOrder objects
-// 5. split PurchaseOrder objects into PurchaseOrderLineItems
-// 6. for each lineitem, enrich with whether the order is domestic or international
-// 7. 'ship' it
-// 8. aggregate the results
-// 9. write to RMQ
-
-    @Bean
-    IntegrationFlow ordersIntegrationFlow(MessageChannel orders) {
-        return IntegrationFlow
-                .from(orders)
-                .transform(new JsonToObjectTransformer(PurchaseOrder.class))
-                .split(PurchaseOrder.class, purchaseOrder -> {
-                    var set = new HashSet<ShippableLineItem>();
-                    for (var lineItem : purchaseOrder.lineItems()) {
-                        set.add(new ShippableLineItem(purchaseOrder, lineItem, "US".equals(purchaseOrder.country())));
-                    }
-                    return set;
-                })
-                .handle((GenericHandler<ShippableLineItem>) (payload, headers) -> {
-                    System.out.println("shipping " + (payload.domestic() ? "domestic" : "international") +
-                            ": " + payload + " with heders : " + headers + ".");
-                    return payload;
-                })
-                .aggregate(as -> as.correlationStrategy(message -> {
-                    var shippableLineItem = (ShippableLineItem) message.getPayload();
-                    return shippableLineItem.order().orderId();
-                }))
-                .handle((payload, headers) -> {
-                    System.out.println("Processing: " + payload + " with heders : " + headers + ".");
-                    return null;
-                })
-                .get();
-    }
-
+	@Bean
+	IntegrationFlow ordersIntegrationFlow(MessageChannel orders) {
+		return IntegrationFlow.from(orders)
+			.transform(new JsonToObjectTransformer(PurchaseOrder.class))
+			.split(PurchaseOrder.class, purchaseOrder -> {
+				var set = new HashSet<ShippableLineItem>();
+				for (var lineItem : purchaseOrder.lineItems()) {
+					set.add(new ShippableLineItem(purchaseOrder, lineItem, "US".equals(purchaseOrder.country())));
+				}
+				return set;
+			})
+			.handle((GenericHandler<ShippableLineItem>) (payload, headers) -> {
+				System.out.println("shipping " + (payload.domestic() ? "domestic" : "international") + ": " + payload
+						+ " with heders : " + headers + ".");
+				return payload;
+			})
+			.aggregate(as -> as.correlationStrategy(message -> {
+				var shippableLineItem = (ShippableLineItem) message.getPayload();
+				return shippableLineItem.order().orderId();
+			}))
+			.handle((payload, headers) -> {
+				System.out.println("Processing: " + payload + " with heders : " + headers + ".");
+				return null;
+			})
+			.get();
+	}
 
 }
-
-
 
 record ShippableLineItem(PurchaseOrder order, LineItem original, boolean domestic) {
 }
@@ -109,19 +100,19 @@ record PurchaseOrder(String orderId, String country, Set<LineItem> lineItems, do
 @ResponseBody
 class OrdersController {
 
-    private final MessageChannel orders;
+	private final MessageChannel orders;
 
-    OrdersController(MessageChannel orders) {
-        this.orders = orders;
-    }
+	OrdersController(MessageChannel orders) {
+		this.orders = orders;
+	}
 
-    // http --form POST :9091/orders order@~/Desktop/frontend-masters-spring-boot-course/messaging-integration/purchase-orders/1010.json
-    @PostMapping("/orders")
-    void orders(@RequestBody MultipartFile order) throws IOException {
-        var content = order.getResource()
-                .getContentAsString(Charset.defaultCharset());
-        var msg = MessageBuilder.withPayload(content).build();
-        this.orders.send(msg);
-    }
+	// http --form POST :9091/orders
+	// order@~/Desktop/frontend-masters-spring-boot-course/messaging-integration/purchase-orders/1010.json
+	@PostMapping("/orders")
+	void orders(@RequestBody MultipartFile order) throws IOException {
+		var content = order.getResource().getContentAsString(Charset.defaultCharset());
+		var msg = MessageBuilder.withPayload(content).build();
+		this.orders.send(msg);
+	}
 
 }

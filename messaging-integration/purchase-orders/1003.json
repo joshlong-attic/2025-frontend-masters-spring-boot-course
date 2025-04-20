@@ -1,0 +1,8 @@
+{
+  "orderId": "PO-1003",
+  "country": "Japan",
+  "lineItems": [
+    { "sku": "SKU-005", "productName": "Noise Cancelling Headphones", "quantity": 1, "unitPrice": 199.99 }
+  ],
+  "total": 199.99
+}
