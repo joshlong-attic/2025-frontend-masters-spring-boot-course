@@ -45,11 +45,6 @@ class RabbitConfiguration {
 		return ExchangeBuilder.directExchange(DESTINATION).build();
 	}
 
-	@RabbitListener(queues = DESTINATION)
-	void on(Message<AdoptionRequest> ar) {
-		Listener.register(DESTINATION, ar);
-	}
-
 	@Bean
 	Jackson2JsonMessageConverter jackson2JsonMessageConverter(ObjectMapper objectMapper) {
 		return new Jackson2JsonMessageConverter(objectMapper, EaiApplication.class.getPackage().getName());
@@ -58,6 +53,11 @@ class RabbitConfiguration {
 	@Bean
 	ApplicationRunner rabbitRunner(RabbitTemplate rt) {
 		return _ -> rt.convertAndSend(DESTINATION, new AdoptionRequest("Prancer"));
+	}
+
+	@RabbitListener(queues = DESTINATION)
+	void on(Message<AdoptionRequest> ar) {
+		Listener.register(DESTINATION, ar);
 	}
 
 }
