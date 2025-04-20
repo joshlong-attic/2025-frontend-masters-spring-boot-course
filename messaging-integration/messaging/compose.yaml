@@ -1,0 +1,21 @@
+services:
+  kafka:
+    image: 'apache/kafka-native:4.0.0'
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+      - '9094:9094'
+      - '2181:2181'
+  pulsar:
+    image: 'apachepulsar/pulsar:latest'
+    ports:
+      - '6650:6650'
+      - '8080:8080'
+    command: 'bin/pulsar standalone'
+  rabbitmq:
+    image: 'rabbitmq:latest'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=secret'
+      - 'RABBITMQ_DEFAULT_USER=myuser'
+    ports:
+      - '5672:5672'

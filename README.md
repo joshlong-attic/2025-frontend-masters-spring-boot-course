@@ -24,4 +24,4 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 12:30    (Lunch)
 13:30    (X) AI
 14:30    (X) Microservices
-15:30 Security
+15:30    (X) Security
