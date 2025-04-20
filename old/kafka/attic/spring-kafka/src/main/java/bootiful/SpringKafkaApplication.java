@@ -136,38 +136,37 @@ class SpringIntegrationKafkaConfiguration {
 	IntegrationFlow inboundFileOutboundKafkaIntegrationFlow(KafkaTemplate<Object, Object> kafkaTemplate,
 			ObjectMapper objectMapper, @Value("file://${user.home}/Desktop/inbound") File inboundDirectory) {
 		var files = Files //
-				.inboundAdapter(inboundDirectory) //
-				.useWatchService(true) //
-				.autoCreateDirectory(true);
+			.inboundAdapter(inboundDirectory) //
+			.useWatchService(true) //
+			.autoCreateDirectory(true);
 		var kafka = Kafka //
-				.outboundChannelAdapter(kafkaTemplate) //
-				.topic(NOTIFICATIONS)//
-				.get();
+			.outboundChannelAdapter(kafkaTemplate) //
+			.topic(NOTIFICATIONS)//
+			.get();
 		return IntegrationFlow //
-				.from(files, spca -> spca.poller(pm -> pm.fixedRate(1_000)))//
-				.transform(new FileToStringTransformer()) //
-				.transform((GenericTransformer<String, Greeting>) source -> Json.read(objectMapper, Greeting.class,
-						source)) //
-				.handle(kafka) //
-				.get();
+			.from(files, spca -> spca.poller(pm -> pm.fixedRate(1_000)))//
+			.transform(new FileToStringTransformer()) //
+			.transform((GenericTransformer<String, Greeting>) source -> Json.read(objectMapper, Greeting.class, source)) //
+			.handle(kafka) //
+			.get();
 	}
 
 	@Bean
 	IntegrationFlow inboundKafkaIntegrationFlow(ContainerProperties containerProperties,
 			ConsumerFactory<Object, Object> consumerFactory) {
 		var inboundKafka = Kafka//
-				.messageDrivenChannelAdapter(consumerFactory, containerProperties) //
-				.get();
+			.messageDrivenChannelAdapter(consumerFactory, containerProperties) //
+			.get();
 		return IntegrationFlow //
-				.from(inboundKafka) //
-				.handle((GenericHandler<Greeting>) (payload, headers) -> {
-					var joinedKeys = String.join(",", headers.keySet());
-					var map = Map.of("topic", NOTIFICATIONS, "keys", joinedKeys, "payload", payload, "file name",
-							Objects.requireNonNull(headers.get(FileHeaders.FILENAME)));
-					log.info(map.toString());
-					return null;
-				}) // l
-				.get();
+			.from(inboundKafka) //
+			.handle((GenericHandler<Greeting>) (payload, headers) -> {
+				var joinedKeys = String.join(",", headers.keySet());
+				var map = Map.of("topic", NOTIFICATIONS, "keys", joinedKeys, "payload", payload, "file name",
+						Objects.requireNonNull(headers.get(FileHeaders.FILENAME)));
+				log.info(map.toString());
+				return null;
+			}) // l
+			.get();
 	}
 
 }

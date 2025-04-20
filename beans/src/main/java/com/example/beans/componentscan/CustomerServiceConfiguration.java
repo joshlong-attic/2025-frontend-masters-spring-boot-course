@@ -14,16 +14,14 @@ import javax.sql.DataSource;
 @ComponentScan
 class CustomerServiceConfiguration {
 
-    @Bean
-    EmbeddedDatabase dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .build();
-    }
+	@Bean
+	EmbeddedDatabase dataSource() {
+		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
+	}
 
-    @Bean
-    JdbcClient jdbcClient(DataSource dataSource) {
-        return JdbcClient.create(dataSource);
-    }
+	@Bean
+	JdbcClient jdbcClient(DataSource dataSource) {
+		return JdbcClient.create(dataSource);
+	}
 
 }

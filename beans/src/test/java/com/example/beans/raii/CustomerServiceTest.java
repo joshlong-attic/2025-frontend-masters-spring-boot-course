@@ -7,10 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CustomerServiceTest {
 
-    @Test
-    void customers() throws Exception {
-        var customerService = new CustomerService();
-        SchemaUtils.initialize(customerService.db);
-        assertEquals(2, customerService.customers().size());
-    }
+	@Test
+	void customers() throws Exception {
+		var customerService = new CustomerService();
+		SchemaUtils.initialize(customerService.db);
+		assertEquals(2, customerService.customers().size());
+	}
+
 }

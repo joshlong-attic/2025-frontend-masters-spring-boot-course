@@ -15,42 +15,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ResponseBody
 class DogAdoptionController {
 
-    private final DogAdoptionService dogAdoptionService;
+	private final DogAdoptionService dogAdoptionService;
 
-    DogAdoptionController(DogAdoptionService dogAdoptionService) {
-        this.dogAdoptionService = dogAdoptionService;
-    }
+	DogAdoptionController(DogAdoptionService dogAdoptionService) {
+		this.dogAdoptionService = dogAdoptionService;
+	}
 
-    @PostMapping("/dogs/{dogId}/adoptions")
-    void adopt(@PathVariable int dogId, @RequestParam String owner) {
-        this.dogAdoptionService.adopt(dogId, owner);
-    }
+	@PostMapping("/dogs/{dogId}/adoptions")
+	void adopt(@PathVariable int dogId, @RequestParam String owner) {
+		this.dogAdoptionService.adopt(dogId, owner);
+	}
+
 }
 
 @Service
 @Transactional
 class DogAdoptionService {
 
-    private final DogRepository repository;
+	private final DogRepository repository;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
-    DogAdoptionService(DogRepository repository, ApplicationEventPublisher applicationEventPublisher) {
-        this.repository = repository;
-        this.applicationEventPublisher = applicationEventPublisher;
-    }
+	DogAdoptionService(DogRepository repository, ApplicationEventPublisher applicationEventPublisher) {
+		this.repository = repository;
+		this.applicationEventPublisher = applicationEventPublisher;
+	}
 
-    void adopt(int id, String owner) {
-        repository.findById(id).ifPresent(dog -> {
-            var up = this.repository.save(new Dog(dog.id(), dog.name(), owner, dog.description()));
-            System.out.println("Adopted [" + up.name() + "] to [" + owner + "].");
-            this.applicationEventPublisher.publishEvent(new DogAdoptionEvent(up.id()));
-        });
-    }
+	void adopt(int id, String owner) {
+		repository.findById(id).ifPresent(dog -> {
+			var up = this.repository.save(new Dog(dog.id(), dog.name(), owner, dog.description()));
+			System.out.println("Adopted [" + up.name() + "] to [" + owner + "].");
+			this.applicationEventPublisher.publishEvent(new DogAdoptionEvent(up.id()));
+		});
+	}
+
 }
 
 record Dog(@Id int id, String name, String owner, String description) {
 }
 
 interface DogRepository extends ListCrudRepository<Dog, Integer> {
+
 }

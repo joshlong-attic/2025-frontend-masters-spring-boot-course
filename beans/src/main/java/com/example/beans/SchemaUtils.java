@@ -9,12 +9,12 @@ import java.util.List;
 
 public abstract class SchemaUtils {
 
-    public static void initialize(DataSource dataSource) throws Exception {
-        var databaseInitializationSettings = new DatabaseInitializationSettings();
-        databaseInitializationSettings.setSchemaLocations(List.of("schema.sql", "data.sql"));
-        var sqlInit = new SqlDataSourceScriptDatabaseInitializer(dataSource,
-                databaseInitializationSettings);
-        sqlInit.afterPropertiesSet();
-        Assert.state(sqlInit.initializeDatabase(), "the sql db coulnd't be initialized");
-    }
+	public static void initialize(DataSource dataSource) throws Exception {
+		var databaseInitializationSettings = new DatabaseInitializationSettings();
+		databaseInitializationSettings.setSchemaLocations(List.of("schema.sql", "data.sql"));
+		var sqlInit = new SqlDataSourceScriptDatabaseInitializer(dataSource, databaseInitializationSettings);
+		sqlInit.afterPropertiesSet();
+		Assert.state(sqlInit.initializeDatabase(), "the sql db coulnd't be initialized");
+	}
+
 }

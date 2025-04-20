@@ -17,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(classes = CustomerServiceConfiguration.class)
 class CustomerServiceTest {
 
-    @Test
-    void customers(CapturedOutput capturedOutput, @Autowired DataSource db,
-                   @Autowired CustomerService customerService) throws Exception {
-        SchemaUtils.initialize(db);
-        assertEquals(2, customerService.customers().size());
-        assertThat(capturedOutput.getAll().trim()).contains("method customers took");
-    }
+	@Test
+	void customers(CapturedOutput capturedOutput, @Autowired DataSource db, @Autowired CustomerService customerService)
+			throws Exception {
+		SchemaUtils.initialize(db);
+		assertEquals(2, customerService.customers().size());
+		assertThat(capturedOutput.getAll().trim()).contains("method customers took");
+	}
+
 }

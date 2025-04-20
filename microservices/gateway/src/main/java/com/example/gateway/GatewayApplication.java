@@ -16,17 +16,17 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 @SpringBootApplication
 public class GatewayApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(GatewayApplication.class, args);
+	}
 
-    @Bean
-    RouterFunction<ServerResponse> apiGW() {
-        return route()
-                .before(BeforeFilterFunctions.rewritePath("/api", "/"))
-                .GET("/api/**", http())
-                    .filter(lb("service"))
-                .GET("/**", http("http://127.0.0.1:8020"))
-                .build();
-    }
+	@Bean
+	RouterFunction<ServerResponse> apiGW() {
+		return route().before(BeforeFilterFunctions.rewritePath("/api", "/"))
+			.GET("/api/**", http())
+			.filter(lb("service"))
+			.GET("/**", http("http://127.0.0.1:8020"))
+			.build();
+	}
+
 }

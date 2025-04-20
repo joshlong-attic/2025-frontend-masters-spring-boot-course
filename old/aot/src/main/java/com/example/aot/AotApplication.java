@@ -18,76 +18,77 @@ import java.nio.charset.Charset;
 @SpringBootApplication
 public class AotApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AotApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(AotApplication.class, args);
+	}
 
 }
 
 class MessageRunner implements ApplicationRunner {
 
-    private final Resource resource;
+	private final Resource resource;
 
-    MessageRunner(Resource resource) {
-        this.resource = resource;
-    }
+	MessageRunner(Resource resource) {
+		this.resource = resource;
+	}
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        var contents = this.resource.getContentAsString(Charset.defaultCharset());
-        System.out.println("contents [" + contents + "]");
-    }
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		var contents = this.resource.getContentAsString(Charset.defaultCharset());
+		System.out.println("contents [" + contents + "]");
+	}
+
 }
-
 
 class Foo {
 
-    int x = 0;
+	int x = 0;
 
-    void bar() {
-        System.out.println("invoking bar");
-    }
+	void bar() {
+		System.out.println("invoking bar");
+	}
+
 }
 
 class ReflectiveThingy {
 
-    ReflectiveThingy() {
+	ReflectiveThingy() {
 
-        var fooClass = Foo.class;
-        for (var field : fooClass.getDeclaredFields())
-            System.out.println("field [" + field + "]");
+		var fooClass = Foo.class;
+		for (var field : fooClass.getDeclaredFields())
+			System.out.println("field [" + field + "]");
 
-        for (var method : fooClass.getDeclaredMethods())
-            System.out.println("method [" + method + "]");
-    }
+		for (var method : fooClass.getDeclaredMethods())
+			System.out.println("method [" + method + "]");
+	}
+
 }
 
 @Configuration
 @ImportRuntimeHints(AotConfiguration.Hints.class)
-//@RegisterReflectionForBinding(ReflectiveThingy.class)
+// @RegisterReflectionForBinding(ReflectiveThingy.class)
 class AotConfiguration {
 
+	private static final Resource RESOURCE = new ClassPathResource("message");
 
-    private static final Resource RESOURCE = new ClassPathResource("message");
+	static class Hints implements RuntimeHintsRegistrar {
 
-    static class Hints implements RuntimeHintsRegistrar {
+		@Override
+		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+			hints.reflection().registerType(Foo.class, MemberCategory.values());
+			hints.resources().registerResource(RESOURCE);
+		}
 
-        @Override
-        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-            hints.reflection().registerType(Foo.class, MemberCategory.values());
-            hints.resources().registerResource(RESOURCE);
-        }
-    }
+	}
 
-    @Bean
-    MessageRunner messageRunner() {
-        return new MessageRunner(RESOURCE);
-    }
+	@Bean
+	MessageRunner messageRunner() {
+		return new MessageRunner(RESOURCE);
+	}
 
-    @Bean
-    ReflectiveThingy reflectiveThingy() {
-        return new ReflectiveThingy();
-    }
+	@Bean
+	ReflectiveThingy reflectiveThingy() {
+		return new ReflectiveThingy();
+	}
+
 }
-

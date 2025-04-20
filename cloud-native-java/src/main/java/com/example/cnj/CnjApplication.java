@@ -30,6 +30,7 @@ public class CnjApplication {
 	Greeting basic() {
 		return new Greeting("localhost");
 	}
+
 }
 
 record Greeting(String greeting) {
@@ -49,6 +50,5 @@ class GreetingsController {
 	Map<String, String> hello() {
 		return Map.of("greeting", "Hello, " + this.greetings + "!");
 	}
+
 }
-
-

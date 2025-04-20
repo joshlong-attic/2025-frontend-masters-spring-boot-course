@@ -8,8 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EventsApplicationTest {
 
-    @Test
-    void events(@Autowired EventsApplication eventsApplication) {
-        Assertions.assertThat(eventsApplication.counter()).isEqualTo(3);
-    }
+	@Test
+	void events(@Autowired EventsApplication eventsApplication) {
+		Assertions.assertThat(eventsApplication.counter()).isEqualTo(3);
+	}
+
 }

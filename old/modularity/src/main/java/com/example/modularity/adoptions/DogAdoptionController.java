@@ -14,42 +14,44 @@ import java.util.Map;
 @Controller
 class DogAdoptionController {
 
-    private final DogAdoptionService service;
+	private final DogAdoptionService service;
 
-    DogAdoptionController(DogAdoptionService service) {
-        this.service = service;
-    }
+	DogAdoptionController(DogAdoptionService service) {
+		this.service = service;
+	}
 
-    @PostMapping("/dogs/{dogId}/adoptions")
-    void adopt(@PathVariable int dogId, Map<String, String> owner) {
-        this.service.adopt(dogId, owner.get("name"));
-    }
+	@PostMapping("/dogs/{dogId}/adoptions")
+	void adopt(@PathVariable int dogId, Map<String, String> owner) {
+		this.service.adopt(dogId, owner.get("name"));
+	}
+
 }
-
 
 @Service
 @Transactional
 class DogAdoptionService {
 
-    private final DogRepository repository;
-    private final ApplicationEventPublisher publisher;
+	private final DogRepository repository;
 
-    DogAdoptionService(DogRepository repository, ApplicationEventPublisher publisher) {
-        this.repository = repository;
-        this.publisher = publisher;
-    }
+	private final ApplicationEventPublisher publisher;
 
-    void adopt(int dogId, String ownerName) {
-        this.repository.findById(dogId).ifPresent(dog -> {
-            var newDog = this.repository.save(new Dog(dog.id(),
-                    ownerName, dog.name()));
-            System.out.println("adopted [" + newDog + "]");
-            this.publisher.publishEvent(new DogAdoptionEvent(dog.id()));
-        });
-    }
+	DogAdoptionService(DogRepository repository, ApplicationEventPublisher publisher) {
+		this.repository = repository;
+		this.publisher = publisher;
+	}
+
+	void adopt(int dogId, String ownerName) {
+		this.repository.findById(dogId).ifPresent(dog -> {
+			var newDog = this.repository.save(new Dog(dog.id(), ownerName, dog.name()));
+			System.out.println("adopted [" + newDog + "]");
+			this.publisher.publishEvent(new DogAdoptionEvent(dog.id()));
+		});
+	}
+
 }
 
 interface DogRepository extends ListCrudRepository<Dog, Integer> {
+
 }
 
 record Dog(@Id int id, String owner, String name) {

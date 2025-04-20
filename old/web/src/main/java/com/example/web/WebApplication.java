@@ -15,16 +15,13 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 @SpringBootApplication
 public class WebApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(WebApplication.class, args);
+	}
 
-    @Bean
-    RouterFunction<ServerResponse> httpRequest() {
-        return route()
-                .GET("/hello", _ -> ServerResponse.ok().body(Map.of("message", "Hello World")))
-                .build();
-    }
+	@Bean
+	RouterFunction<ServerResponse> httpRequest() {
+		return route().GET("/hello", _ -> ServerResponse.ok().body(Map.of("message", "Hello World"))).build();
+	}
+
 }
-
-

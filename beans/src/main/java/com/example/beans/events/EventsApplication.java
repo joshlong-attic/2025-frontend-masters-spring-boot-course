@@ -14,39 +14,41 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootApplication
 public class EventsApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(EventsApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(EventsApplication.class, args);
+	}
 
-    private final AtomicInteger counter = new AtomicInteger();
+	private final AtomicInteger counter = new AtomicInteger();
 
-    int counter (){ return counter.get(); }
+	int counter() {
+		return counter.get();
+	}
 
-    @Bean
-    ApplicationListener<ApplicationReadyEvent> listener(ApplicationEventPublisher publisher) {
-        return event -> publisher
-                .publishEvent(new SpringIsAwesomeEvent());
-    }
+	@Bean
+	ApplicationListener<ApplicationReadyEvent> listener(ApplicationEventPublisher publisher) {
+		return event -> publisher.publishEvent(new SpringIsAwesomeEvent());
+	}
 
-    @EventListener
-    void on(ApplicationReadyEvent event) {
-        register(event);
-    }
+	@EventListener
+	void on(ApplicationReadyEvent event) {
+		register(event);
+	}
 
-    @EventListener
-    void on(ContextRefreshedEvent event) {
-        register(event);
-    }
+	@EventListener
+	void on(ContextRefreshedEvent event) {
+		register(event);
+	}
 
-    @EventListener
-    void on(SpringIsAwesomeEvent event) {
-        register(event);
-    }
+	@EventListener
+	void on(SpringIsAwesomeEvent event) {
+		register(event);
+	}
 
-    void register(Object event) {
-        System.out.println("Registering [" + event + +']');
-        this.counter.incrementAndGet();
-    }
+	void register(Object event) {
+		System.out.println("Registering [" + event + +']');
+		this.counter.incrementAndGet();
+	}
+
 }
 
 record SpringIsAwesomeEvent() {

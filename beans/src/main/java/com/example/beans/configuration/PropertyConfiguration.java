@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(BeansProperties.class)
 class PropertyConfiguration {
+
 }
 
 @ConfigurationProperties(prefix = "beans")

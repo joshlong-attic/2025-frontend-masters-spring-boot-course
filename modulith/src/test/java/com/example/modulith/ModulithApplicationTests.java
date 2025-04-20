@@ -11,8 +11,8 @@ class ModulithApplicationTests {
 
 	@Test
 	void contextLoads() {
-		var am = ApplicationModules.of(ModulithApplication.class) ;
-		am.verify() ;
+		var am = ApplicationModules.of(ModulithApplication.class);
+		am.verify();
 
 		System.out.println(am);
 

@@ -25,48 +25,48 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Configuration
 class CustomerServiceConfiguration {
 
-    @Bean
-    EmbeddedDatabase embeddedDatabaseBuilder() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .build();
-    }
+	@Bean
+	EmbeddedDatabase embeddedDatabaseBuilder() {
+		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
+	}
 
-    @Bean
-    JdbcClient jdbcClient(EmbeddedDatabase embeddedDatabase) {
-        return JdbcClient.create(embeddedDatabase);
-    }
+	@Bean
+	JdbcClient jdbcClient(EmbeddedDatabase embeddedDatabase) {
+		return JdbcClient.create(embeddedDatabase);
+	}
 
-    @Bean
-    CustomerService customerService(JdbcClient db) {
-        return LoggableProxyMaker.proxy(new CustomerService(db));
-    }
+	@Bean
+	CustomerService customerService(JdbcClient db) {
+		return LoggableProxyMaker.proxy(new CustomerService(db));
+	}
 
 }
-
 
 class ManualCustomerServiceTest {
 
-    private final ApplicationContext applicationContext =
-            new AnnotationConfigApplicationContext(CustomerServiceConfiguration.class);
+	private final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(
+			CustomerServiceConfiguration.class);
 
-    @Test
-    void customers() throws Exception {
-        var customerService = applicationContext.getBean(CustomerService.class);
-        var db = applicationContext.getBean(DataSource.class);
-        SchemaUtils.initialize(db);
-        assertEquals(2, customerService.customers().size());
-    }
+	@Test
+	void customers() throws Exception {
+		var customerService = applicationContext.getBean(CustomerService.class);
+		var db = applicationContext.getBean(DataSource.class);
+		SchemaUtils.initialize(db);
+		assertEquals(2, customerService.customers().size());
+	}
+
 }
 
-@ExtendWith( OutputCaptureExtension.class)
+@ExtendWith(OutputCaptureExtension.class)
 @SpringJUnitConfig(classes = CustomerServiceConfiguration.class)
 class SpringTestCustomerServiceTest {
 
-    @Test
-    void customers(CapturedOutput capturedOutput , @Autowired DataSource db, @Autowired CustomerService customerService) throws Exception {
-        SchemaUtils.initialize(db);
-        assertEquals(2, customerService.customers().size());
-        assertThat(capturedOutput.getAll().trim()).contains("method customers took");
-    }
+	@Test
+	void customers(CapturedOutput capturedOutput, @Autowired DataSource db, @Autowired CustomerService customerService)
+			throws Exception {
+		SchemaUtils.initialize(db);
+		assertEquals(2, customerService.customers().size());
+		assertThat(capturedOutput.getAll().trim()).contains("method customers took");
+	}
+
 }

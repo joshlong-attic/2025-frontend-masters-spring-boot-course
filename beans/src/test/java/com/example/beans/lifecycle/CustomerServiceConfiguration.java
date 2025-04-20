@@ -24,17 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ComponentScan
 class CustomerServiceConfiguration {
 
-    @Bean
-    EmbeddedDatabase dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .build();
-    }
+	@Bean
+	EmbeddedDatabase dataSource() {
+		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
+	}
 
-    @Bean
-    JdbcClient jdbcClient(DataSource dataSource) {
-        return JdbcClient.create(dataSource);
-    }
+	@Bean
+	JdbcClient jdbcClient(DataSource dataSource) {
+		return JdbcClient.create(dataSource);
+	}
 
 }
 
@@ -42,10 +40,10 @@ class CustomerServiceConfiguration {
 @SpringJUnitConfig(classes = CustomerServiceConfiguration.class)
 class CustomerServiceTest {
 
-    @Test
-    void customers(  @Autowired DataSource db,
-                   @Autowired CustomerService customerService) throws Exception {
-        SchemaUtils.initialize(db);
-        assertEquals(2, customerService.customers().size());
-    }
+	@Test
+	void customers(@Autowired DataSource db, @Autowired CustomerService customerService) throws Exception {
+		SchemaUtils.initialize(db);
+		assertEquals(2, customerService.customers().size());
+	}
+
 }

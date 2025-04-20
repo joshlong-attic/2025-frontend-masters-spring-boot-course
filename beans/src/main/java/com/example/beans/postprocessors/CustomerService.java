@@ -13,27 +13,26 @@ import java.util.Collection;
 @Service
 class CustomerService implements Loggable, InitializingBean {
 
-    private final JdbcClient db;
+	private final JdbcClient db;
 
-    CustomerService(JdbcClient db) {
-        this.db = db;
-    }
+	CustomerService(JdbcClient db) {
+		this.db = db;
+	}
 
-    Collection<Customer> customers() throws Exception {
-        return db
-                .sql("select id, name from CUSTOMER")
-                .query((rs, _) -> new Customer(rs.getInt("id"), rs.getString("name")))
-                .list();
-    }
+	Collection<Customer> customers() throws Exception {
+		return db.sql("select id, name from CUSTOMER")
+			.query((rs, _) -> new Customer(rs.getInt("id"), rs.getString("name")))
+			.list();
+	}
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(this.db, "the db should not be null");
-    }
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		Assert.notNull(this.db, "the db should not be null");
+	}
 
-    @PreDestroy
-    void destroy() {
-        System.out.println("shutting down " + getClass().getSimpleName() + '.');
-    }
+	@PreDestroy
+	void destroy() {
+		System.out.println("shutting down " + getClass().getSimpleName() + '.');
+	}
+
 }
-

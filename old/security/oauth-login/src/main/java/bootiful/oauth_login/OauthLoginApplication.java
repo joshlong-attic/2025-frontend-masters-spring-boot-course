@@ -15,9 +15,9 @@ import java.util.Map;
 @SpringBootApplication
 public class OauthLoginApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(OauthLoginApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(OauthLoginApplication.class, args);
+	}
 
 }
 
@@ -25,22 +25,22 @@ public class OauthLoginApplication {
 @ResponseBody
 class ClientController {
 
-    private final RestClient http;
+	private final RestClient http;
 
-    ClientController(RestClient.Builder http) {
-        this.http = http.build();
-    }
+	ClientController(RestClient.Builder http) {
+		this.http = http.build();
+	}
 
-    @GetMapping("/")
-    Map<String, String> hello(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient oAuth2AuthorizedClient) {
-        var token = oAuth2AuthorizedClient.getAccessToken();
-        return http
-                .get()
-                .uri("http://localhost:9091/")
-                .headers(httpHeaders -> httpHeaders.setBearerAuth(token.getTokenValue()))
-                .retrieve()
-                .body(new ParameterizedTypeReference<>() {
-                });
+	@GetMapping("/")
+	Map<String, String> hello(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+		var token = oAuth2AuthorizedClient.getAccessToken();
+		return http.get()
+			.uri("http://localhost:9091/")
+			.headers(httpHeaders -> httpHeaders.setBearerAuth(token.getTokenValue()))
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 
-    }
+	}
+
 }

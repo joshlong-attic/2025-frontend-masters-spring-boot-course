@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class CustomerServiceTestConfiguration {
 
-    @Bean
-    static LoggingBeanPostProcessor loggingBeanPostProcessor() {
-        return new LoggingBeanPostProcessor();
-    }
+	@Bean
+	static LoggingBeanPostProcessor loggingBeanPostProcessor() {
+		return new LoggingBeanPostProcessor();
+	}
+
 }

@@ -11,16 +11,14 @@ import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 @SpringJUnitConfig(classes = CustomerServiceConfiguration.class)
 class CustomerServiceTest {
 
-    @Test
-    void customers(
-            @Autowired DataSource db,
-            @Autowired CustomerService customerService) throws Exception {
-        SchemaUtils.initialize(db);
-        assertEquals(2, customerService.customers().size());
+	@Test
+	void customers(@Autowired DataSource db, @Autowired CustomerService customerService) throws Exception {
+		SchemaUtils.initialize(db);
+		assertEquals(2, customerService.customers().size());
 
-    }
+	}
+
 }

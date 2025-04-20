@@ -10,14 +10,13 @@ import org.springframework.core.env.Environment;
 @SpringBootTest
 class PropertyConfigurationTest {
 
-    @Test
-    void contextLoads(@Autowired Environment environment,
-                      @Value("${beans.message}") String message,
-                      @Autowired BeansProperties configuration) {
-        var constant = "hello world";
-        Assertions.assertThat(environment.getProperty("beans.message")).isEqualTo(constant);
-        Assertions.assertThat(message).isEqualTo(constant);
-        Assertions.assertThat(configuration.message()).isEqualTo(constant);
-    }
+	@Test
+	void contextLoads(@Autowired Environment environment, @Value("${beans.message}") String message,
+			@Autowired BeansProperties configuration) {
+		var constant = "hello world";
+		Assertions.assertThat(environment.getProperty("beans.message")).isEqualTo(constant);
+		Assertions.assertThat(message).isEqualTo(constant);
+		Assertions.assertThat(configuration.message()).isEqualTo(constant);
+	}
 
 }

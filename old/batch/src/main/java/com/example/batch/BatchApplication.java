@@ -22,51 +22,48 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class BatchApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BatchApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BatchApplication.class, args);
+	}
 
-    @Bean
-    FlatFileItemReader<Customer> flatFileItemReader(@Value("classpath:/input.csv") Resource resource) {
-        return new FlatFileItemReaderBuilder<Customer>()
-//                .lineTokenizer(new DelimitedLineTokenizer(","))
-                .resource(resource)
-                .name("csvFlatFileItemReader")
-                .linesToSkip(1)
-                .delimited().names("id", "name") 
-                .fieldSetMapper(fieldSet -> new Customer(fieldSet.readInt( "id"), fieldSet.readString("name")))
-                .build();
-    }
+	@Bean
+	FlatFileItemReader<Customer> flatFileItemReader(@Value("classpath:/input.csv") Resource resource) {
+		return new FlatFileItemReaderBuilder<Customer>()
+			// .lineTokenizer(new DelimitedLineTokenizer(","))
+			.resource(resource)
+			.name("csvFlatFileItemReader")
+			.linesToSkip(1)
+			.delimited()
+			.names("id", "name")
+			.fieldSetMapper(fieldSet -> new Customer(fieldSet.readInt("id"), fieldSet.readString("name")))
+			.build();
+	}
 
-    @Bean
-    JdbcBatchItemWriter<Customer> jdbcBatchItemWriter(DataSource dataSource) {
-        return new JdbcBatchItemWriterBuilder<Customer>()
-                .assertUpdates(true)
-                .dataSource(dataSource)
-                .sql("insert into customer (id,name) values (?,?)")
-                .itemPreparedStatementSetter((item, ps) -> {
-                    ps.setInt(1, item.id()); 
-                    ps.setString(2, item.name()); 
-                })
-                .build();
-    }
+	@Bean
+	JdbcBatchItemWriter<Customer> jdbcBatchItemWriter(DataSource dataSource) {
+		return new JdbcBatchItemWriterBuilder<Customer>().assertUpdates(true)
+			.dataSource(dataSource)
+			.sql("insert into customer (id,name) values (?,?)")
+			.itemPreparedStatementSetter((item, ps) -> {
+				ps.setInt(1, item.id());
+				ps.setString(2, item.name());
+			})
+			.build();
+	}
 
-    @Bean
-    Step start(JobRepository repository, PlatformTransactionManager transactionManager,
-               FlatFileItemReader<Customer> reader, JdbcBatchItemWriter<Customer> writer) {
-        return new StepBuilder("startStep", repository)
-                .<Customer, Customer>chunk(10, transactionManager)
-                .reader(reader)
-                .writer(writer)
-                .build();
-    }
+	@Bean
+	Step start(JobRepository repository, PlatformTransactionManager transactionManager,
+			FlatFileItemReader<Customer> reader, JdbcBatchItemWriter<Customer> writer) {
+		return new StepBuilder("startStep", repository).<Customer, Customer>chunk(10, transactionManager)
+			.reader(reader)
+			.writer(writer)
+			.build();
+	}
 
-    @Bean
-    Job job(JobRepository repository, Step start) {
-        return new JobBuilder("csvToDbJob", repository)
-                .start(start)
-                .build();
-    }
+	@Bean
+	Job job(JobRepository repository, Step start) {
+		return new JobBuilder("csvToDbJob", repository).start(start).build();
+	}
 
 }
 

@@ -1,4 +1,4 @@
 package com.example.modulith.adoptions;
 
-public record DogAdoptionEvent (int dogId) {
+public record DogAdoptionEvent(int dogId) {
 }

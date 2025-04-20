@@ -14,24 +14,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootApplication
 public class ServiceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ServiceApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceApplication.class, args);
+	}
+
 }
 
 @Controller
 @ResponseBody
 class GreetingController {
 
-    private final AtomicInteger port = new AtomicInteger(0);
+	private final AtomicInteger port = new AtomicInteger(0);
 
-    @EventListener
-    void onStartup(WebServerInitializedEvent event) {
-        this.port.set(event.getWebServer().getPort());
-    }
+	@EventListener
+	void onStartup(WebServerInitializedEvent event) {
+		this.port.set(event.getWebServer().getPort());
+	}
 
-    @GetMapping("/hello")
-    Map<String, String> hello() {
-        return Map.of("message", "Hello, from localhost:" + this.port.get() + "!");
-    }
+	@GetMapping("/hello")
+	Map<String, String> hello() {
+		return Map.of("message", "Hello, from localhost:" + this.port.get() + "!");
+	}
+
 }

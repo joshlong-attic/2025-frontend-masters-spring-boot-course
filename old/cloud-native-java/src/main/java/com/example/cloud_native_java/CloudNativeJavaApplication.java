@@ -8,29 +8,23 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.context.annotation.Bean;
 
-
 @SpringBootApplication
 public class CloudNativeJavaApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(CloudNativeJavaApplication.class, args);
-    }
-    
-  
-    @Bean
-    @ConditionalOnCloudPlatform(CloudPlatform.KUBERNETES)
-    GreetingsController kubernetesGreetingsController() {
-        return new GreetingsController( "Kubernetes");
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(CloudNativeJavaApplication.class, args);
+	}
 
-    @Bean
-    @ConditionalOnMissingBean
-    GreetingsController defaultGreetingsController (){
-        return new GreetingsController( "Cloud Native Java");
-    }
+	@Bean
+	@ConditionalOnCloudPlatform(CloudPlatform.KUBERNETES)
+	GreetingsController kubernetesGreetingsController() {
+		return new GreetingsController("Kubernetes");
+	}
 
+	@Bean
+	@ConditionalOnMissingBean
+	GreetingsController defaultGreetingsController() {
+		return new GreetingsController("Cloud Native Java");
+	}
 
 }
-
-
-

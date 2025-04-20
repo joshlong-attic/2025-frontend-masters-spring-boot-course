@@ -82,38 +82,32 @@ class IntegrationConfiguration {
 	}
 
 	@Bean
-	IntegrationFlow outboundKafkaFlow(
-			MessageChannel kafkaMessageChannel,
-			KafkaTemplate<Object, Object> pageViewEventKafkaTemplate
-	) {
+	IntegrationFlow outboundKafkaFlow(MessageChannel kafkaMessageChannel,
+			KafkaTemplate<Object, Object> pageViewEventKafkaTemplate) {
 		var kafkaOutboundAdapter = Kafka.outboundChannelAdapter(pageViewEventKafkaTemplate);
-		return IntegrationFlow
-				.from(kafkaMessageChannel)
-				.handle(kafkaOutboundAdapter)
-				.get();
+		return IntegrationFlow.from(kafkaMessageChannel).handle(kafkaOutboundAdapter).get();
 	}
 
 }
-
 
 @Configuration
 class RunnerConfiguration {
 
 	@Bean
 	ApplicationListener<ApplicationReadyEvent> runner(KafkaTemplate<Object, Object> template
-			//,MessageChannel kafkaMessageChannel, 
-	,StreamBridge streamBridge		//,
-//, 
+	// ,MessageChannel kafkaMessageChannel,
+			, StreamBridge streamBridge // ,
+	// ,
 	) {
 		var executorService = Executors.newScheduledThreadPool(1);
 		return event -> executorService.schedule(() -> {
 			try {
 				for (var i = 0; i < 100; i++) {
-//					template(template);
-//					integration(kafkaMessageChannel);
-//					stream(streamBridge);
+					// template(template);
+					// integration(kafkaMessageChannel);
+					// stream(streamBridge);
 				}
-			}//
+			} //
 			catch (Throwable throwable) {
 				System.out.println("got an exception [" + throwable + ']');
 			}
@@ -124,11 +118,9 @@ class RunnerConfiguration {
 		template.send("page_views", randomPageView()).get();
 	}
 
-
 	private static void stream(StreamBridge streamBridge) {
 		streamBridge.send("pageViews-out-0", randomPageView());
 	}
-
 
 	private static void integration(MessageChannel channel) throws Exception {
 		var headers = Map.of(KafkaHeaders.TOPIC, "page_views");

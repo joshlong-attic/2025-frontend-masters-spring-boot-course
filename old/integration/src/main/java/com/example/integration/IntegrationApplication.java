@@ -13,20 +13,20 @@ import java.io.File;
 @SpringBootApplication
 public class IntegrationApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(IntegrationApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(IntegrationApplication.class, args);
+	}
 
-    @Bean
-    IntegrationFlow newFilesIntegrationFlow(@Value("file://${HOME}/Desktop/inbound") File in,
-                                            @Value("file://${HOME}/Desktop/outbound") File out) {
-        return IntegrationFlow
-                .from(Files.inboundAdapter(in).autoCreateDirectory(true))
-                .handle((GenericHandler<File>) (payload, _) -> {
-                    System.out.println("got a new file called " + payload.getAbsolutePath() + '.');
-                    return payload;
-                })
-                .handle(Files.outboundAdapter(out).autoCreateDirectory(true))
-                .get();
-    }
+	@Bean
+	IntegrationFlow newFilesIntegrationFlow(@Value("file://${HOME}/Desktop/inbound") File in,
+			@Value("file://${HOME}/Desktop/outbound") File out) {
+		return IntegrationFlow.from(Files.inboundAdapter(in).autoCreateDirectory(true))
+			.handle((GenericHandler<File>) (payload, _) -> {
+				System.out.println("got a new file called " + payload.getAbsolutePath() + '.');
+				return payload;
+			})
+			.handle(Files.outboundAdapter(out).autoCreateDirectory(true))
+			.get();
+	}
+
 }

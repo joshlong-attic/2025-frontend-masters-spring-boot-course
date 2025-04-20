@@ -10,14 +10,15 @@ import java.util.Map;
 @ResponseBody
 public class GreetingsController {
 
-    private final String name;
+	private final String name;
 
-    public GreetingsController(String name) {
-        this.name = name;
-    }
+	public GreetingsController(String name) {
+		this.name = name;
+	}
 
-    @GetMapping("/greetings")
-    Map<String, String> hello() {
-        return Map.of("greeting", "Hello, " + this.name + "!");
-    }
+	@GetMapping("/greetings")
+	Map<String, String> hello() {
+		return Map.of("greeting", "Hello, " + this.name + "!");
+	}
+
 }

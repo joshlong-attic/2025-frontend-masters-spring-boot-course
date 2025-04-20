@@ -14,11 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = BeansApplication.class)
 class CustomerServiceTest {
 
-    @Test
-    void customers(CapturedOutput capturedOutput,
-                   @Autowired CustomerService customerService) throws Exception {
-        assertEquals(2, customerService.customers().size());
-        assertThat(capturedOutput.getAll().trim()).contains("method customers took");
-    }
-}
+	@Test
+	void customers(CapturedOutput capturedOutput, @Autowired CustomerService customerService) throws Exception {
+		assertEquals(2, customerService.customers().size());
+		assertThat(capturedOutput.getAll().trim()).contains("method customers took");
+	}
 
+}

@@ -9,9 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class Dogtor {
 
-    @ApplicationModuleListener
-    void adopt(DogAdoptionEvent event) throws Exception {
-        Thread.sleep(5000);
-        System.out.println("Adopting dog " + event.dogId() + "!");
-    }
+	@ApplicationModuleListener
+	void adopt(DogAdoptionEvent event) throws Exception {
+		Thread.sleep(5000);
+		System.out.println("Adopting dog " + event.dogId() + "!");
+	}
+
 }

@@ -20,46 +20,38 @@ import java.util.List;
 @RegisterReflectionForBinding(DogAdoptionSuggestion.class)
 public class AiApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AiApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(AiApplication.class, args);
+	}
 
-    @Bean
-    ApplicationRunner demo(ChatClient cc) {
-        return _ -> {
-            var content = cc
-                    .prompt()
-                    .user("do you have any neurotic dogs?")
-                    .call()
-                    .entity(DogAdoptionSuggestion.class);
-            System.out.println("content [" + content + "]");
-        };
-    }
+	@Bean
+	ApplicationRunner demo(ChatClient cc) {
+		return _ -> {
+			var content = cc.prompt().user("do you have any neurotic dogs?").call().entity(DogAdoptionSuggestion.class);
+			System.out.println("content [" + content + "]");
+		};
+	}
 
-    @Bean
-    ChatClient chatClient(
-            ChatClient.Builder builder,
-            @Value("classpath:/my-system-prompt.md") Resource prompt,
-            DogRepository repository, VectorStore vectorStore) {
- 
-            repository.findAll().forEach(dog -> {
-                var dogument = new Document("id: %s, name: %s, description: %s".formatted(
-                        dog.id(), dog.name(), dog.description()
-                ));
-                vectorStore.add(List.of(dogument));
-            });
+	@Bean
+	ChatClient chatClient(ChatClient.Builder builder, @Value("classpath:/my-system-prompt.md") Resource prompt,
+			DogRepository repository, VectorStore vectorStore) {
 
-        return builder
-                .defaultSystem(prompt)
-                .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
-                .build();
-    }
+		repository.findAll().forEach(dog -> {
+			var dogument = new Document(
+					"id: %s, name: %s, description: %s".formatted(dog.id(), dog.name(), dog.description()));
+			vectorStore.add(List.of(dogument));
+		});
+
+		return builder.defaultSystem(prompt).defaultAdvisors(new QuestionAnswerAdvisor(vectorStore)).build();
+	}
+
 }
 
 record Dog(@Id int id, String name, String description) {
 }
 
 interface DogRepository extends ListCrudRepository<Dog, Integer> {
+
 }
 
 record DogAdoptionSuggestion(int id, String name, String description) {

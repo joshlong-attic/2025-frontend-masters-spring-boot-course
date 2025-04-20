@@ -10,9 +10,9 @@ import org.springframework.web.client.RestClient;
 @SpringBootApplication
 public class ScalabilityApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ScalabilityApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ScalabilityApplication.class, args);
+	}
 
 }
 
@@ -20,23 +20,20 @@ public class ScalabilityApplication {
 @ResponseBody
 class CoraIberkleidController {
 
-    private final RestClient http;
+	private final RestClient http;
 
-    CoraIberkleidController(RestClient.Builder http) {
-        this.http = http.build();
-    }
+	CoraIberkleidController(RestClient.Builder http) {
+		this.http = http.build();
+	}
 
-    @GetMapping("/delay")
-    String delay() {
-        var log = "";
-        log+=Thread.currentThread()   +":";
-        var response = http
-                .get()
-                .uri("http://localhost:9000/delay/5")
-                .retrieve()
-                .body(String.class);
-        log+= Thread.currentThread() + System.lineSeparator()  ;
-        System.out.println(log);
-        return response ;
-    }
+	@GetMapping("/delay")
+	String delay() {
+		var log = "";
+		log += Thread.currentThread() + ":";
+		var response = http.get().uri("http://localhost:9000/delay/5").retrieve().body(String.class);
+		log += Thread.currentThread() + System.lineSeparator();
+		System.out.println(log);
+		return response;
+	}
+
 }

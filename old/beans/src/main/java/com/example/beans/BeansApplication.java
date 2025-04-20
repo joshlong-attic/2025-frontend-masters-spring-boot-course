@@ -29,36 +29,36 @@ import java.util.Arrays;
 @SpringBootApplication
 public class BeansApplication {
 
-    public static void main(String[] args) throws BeansException {
-//        var context = new ClassPathXmlApplicationContext("beans.xml");
-//        context.start();
+	public static void main(String[] args) throws BeansException {
+		// var context = new ClassPathXmlApplicationContext("beans.xml");
+		// context.start();
 
-//        var context = new AnnotationConfigApplicationContext(BeansApplication.class);
-//        context.start();
+		// var context = new AnnotationConfigApplicationContext(BeansApplication.class);
+		// context.start();
 
-        var context = SpringApplication.run(BeansApplication.class, args);
+		var context = SpringApplication.run(BeansApplication.class, args);
 
-    }
+	}
 
-    @Bean
-    Bar bar(Foo foo) {
-        return new Bar(foo);
-    }
+	@Bean
+	Bar bar(Foo foo) {
+		return new Bar(foo);
+	}
 
-    @Bean
-    static BPP bpp() {
-        return new BPP();
-    }
+	@Bean
+	static BPP bpp() {
+		return new BPP();
+	}
 
-    @Bean
-    static BFPP bfpp() {
-        return new BFPP();
-    }
+	@Bean
+	static BFPP bfpp() {
+		return new BFPP();
+	}
 
-    @Bean
-    static LoggingInterceptor loggingInterceptor() {
-        return new LoggingInterceptor();
-    }
+	@Bean
+	static LoggingInterceptor loggingInterceptor() {
+		return new LoggingInterceptor();
+	}
 
 }
 
@@ -68,123 +68,134 @@ record CustomerValidatedEvent(String name) {
 @Component
 class ValidationListener {
 
-    @EventListener
-    void onCustomerValidatedEvent(CustomerValidatedEvent event) {
-        System.out.println("got a CustomerValidatedEvent: " + event);
-    }
+	@EventListener
+	void onCustomerValidatedEvent(CustomerValidatedEvent event) {
+		System.out.println("got a CustomerValidatedEvent: " + event);
+	}
+
 }
 
 @Component
 class ReadyListener implements ApplicationListener<ApplicationReadyEvent> {
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        System.out.println("the application is ready..");
-    }
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		System.out.println("the application is ready..");
+	}
+
 }
 
 @Configuration
 class PropertiesConfiguration {
-    
-    @Bean
-    PropertiesRunner propertiesRunner(BootifulProperties properties) {
-        return new PropertiesRunner(properties.name());
-    }
+
+	@Bean
+	PropertiesRunner propertiesRunner(BootifulProperties properties) {
+		return new PropertiesRunner(properties.name());
+	}
+
 }
 
 class PropertiesRunner implements ApplicationRunner {
 
-    private final String name;
+	private final String name;
 
-    PropertiesRunner(String name) {
-        this.name = name;
-    }
+	PropertiesRunner(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.println("name: " + this.name);
-    }
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		System.out.println("name: " + this.name);
+	}
+
 }
 
 @Component
 class Initializer implements ApplicationRunner {
 
-    private final CustomerService customerService;
+	private final CustomerService customerService;
 
-    Initializer(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+	Initializer(CustomerService customerService) {
+		this.customerService = customerService;
+	}
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        this.customerService.validate("foo");
-    }
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		this.customerService.validate("foo");
+	}
+
 }
 
 class LoggingInterceptor implements BeanPostProcessor {
 
-    private final MI mi = new MI();
+	private final MI mi = new MI();
 
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof CustomerService) {
-            var pf = new ProxyFactory(bean);
-            pf.addAdvice(mi);
-            pf.setProxyTargetClass(true);
-            return pf.getProxy();
-        }
-        return bean;
-    }
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		if (bean instanceof CustomerService) {
+			var pf = new ProxyFactory(bean);
+			pf.addAdvice(mi);
+			pf.setProxyTargetClass(true);
+			return pf.getProxy();
+		}
+		return bean;
+	}
+
 }
 
 @Service
 class CustomerService {
 
-    private final ApplicationEventPublisher publisher;
+	private final ApplicationEventPublisher publisher;
 
-    CustomerService(ApplicationEventPublisher publisher) {
-        this.publisher = publisher;
-    }
+	CustomerService(ApplicationEventPublisher publisher) {
+		this.publisher = publisher;
+	}
 
-    boolean validate(String name) {
-        System.out.println("isCustomer(" + name + ")");
-        this.publisher.publishEvent(new CustomerValidatedEvent(name));
-        return true;
-    }
+	boolean validate(String name) {
+		System.out.println("isCustomer(" + name + ")");
+		this.publisher.publishEvent(new CustomerValidatedEvent(name));
+		return true;
+	}
+
 }
 
 class MI implements MethodInterceptor {
 
-    @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        System.out.println("========================================================");
-        System.out.println("invoking [" + invocation.getMethod().getName() +
-                " with arguments [" + Arrays.toString(invocation.getArguments()) + "]");
-        return invocation.proceed();
-    }
+	@Override
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		System.out.println("========================================================");
+		System.out.println("invoking [" + invocation.getMethod().getName() + " with arguments ["
+				+ Arrays.toString(invocation.getArguments()) + "]");
+		return invocation.proceed();
+	}
+
 }
 
 class BFPP implements BeanFactoryPostProcessor {
 
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        for (var beanDefinitionName : beanFactory.getBeanDefinitionNames())
-            System.out.println("beanDefinitionName [" + beanDefinitionName + ":" +
-                    beanFactory.getBeanDefinition(beanDefinitionName).getBeanClassName() + "]");
-    }
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		for (var beanDefinitionName : beanFactory.getBeanDefinitionNames())
+			System.out.println("beanDefinitionName [" + beanDefinitionName + ":"
+					+ beanFactory.getBeanDefinition(beanDefinitionName).getBeanClassName() + "]");
+	}
+
 }
 
 class BPP implements BeanPostProcessor {
 
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("bean [" + bean + "] beanName [" + beanName + "]");
-        return bean;
-    }
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		System.out.println("bean [" + bean + "] beanName [" + beanName + "]");
+		return bean;
+	}
+
 }
 
 @Component
 class Foo {
+
 }
 
 @ConfigurationProperties(prefix = "bootiful")
@@ -193,11 +204,12 @@ record BootifulProperties(String name) {
 
 class Bar {
 
-    private final Foo foo;
+	private final Foo foo;
 
-    Bar(Foo foo) {
-        this.foo = foo;
-        Assert.notNull(this.foo, "there should be a foo dependency");
-        System.out.println("got a foo");
-    }
+	Bar(Foo foo) {
+		this.foo = foo;
+		Assert.notNull(this.foo, "there should be a foo dependency");
+		System.out.println("got a foo");
+	}
+
 }

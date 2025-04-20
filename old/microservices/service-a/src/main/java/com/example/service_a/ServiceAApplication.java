@@ -14,47 +14,48 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Map;
 
-
 @SpringBootApplication
 public class ServiceAApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ServiceAApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceAApplication.class, args);
+	}
 
-    @Bean
-    ApplicationRunner configClientRunner(Environment environment) {
-        return _ -> System.out.println("message: [" + environment.getProperty("message") + "]");
-    }
+	@Bean
+	ApplicationRunner configClientRunner(Environment environment) {
+		return _ -> System.out.println("message: [" + environment.getProperty("message") + "]");
+	}
 
-    @Bean
-    @LoadBalanced
-    RestClient.Builder restClientBuilder() {
-        return RestClient.builder();
-    }
+	@Bean
+	@LoadBalanced
+	RestClient.Builder restClientBuilder() {
+		return RestClient.builder();
+	}
 
-    @Bean
-    RestClient restClient(RestClient.Builder builder) {
-        return builder.build();
-    }
+	@Bean
+	RestClient restClient(RestClient.Builder builder) {
+		return builder.build();
+	}
+
 }
 
 @Controller
 @ResponseBody
 class ConsumerController {
 
-    private final RestClient http;
+	private final RestClient http;
 
-    ConsumerController(RestClient http) {
-        this.http = http;
-    }
+	ConsumerController(RestClient http) {
+		this.http = http;
+	}
 
-    @GetMapping("/call")
-    Map<String, Object> call() {
-        return this.http
-                .get()
-                .uri("http://service-b/answer")
-                .retrieve()
-                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
-    }
+	@GetMapping("/call")
+	Map<String, Object> call() {
+		return this.http.get()
+			.uri("http://service-b/answer")
+			.retrieve()
+			.body(new ParameterizedTypeReference<Map<String, Object>>() {
+			});
+	}
+
 }

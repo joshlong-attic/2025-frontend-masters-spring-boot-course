@@ -23,18 +23,16 @@ public class ConsumerApplication {
 	@Bean
 	Function<KStream<String, PageView>, KStream<String, Long>> processor() {
 		return kStream -> kStream//
-				.filter((k, pve) -> pve.duration() > 0)//
-				.map((k, pve) -> new KeyValue<>(pve.page(), 0L))//
-				.groupByKey(Grouped.with(Serdes.String(), Serdes.Long()))//
-				.count(Materialized.as("pcmv"))//
-				.toStream();
+			.filter((k, pve) -> pve.duration() > 0)//
+			.map((k, pve) -> new KeyValue<>(pve.page(), 0L))//
+			.groupByKey(Grouped.with(Serdes.String(), Serdes.Long()))//
+			.count(Materialized.as("pcmv"))//
+			.toStream();
 	}
 
 	@Bean
 	Consumer<KTable<String, Long>> pageCount() {
-		return counts -> counts
-				.toStream()
-				.foreach((key, value) -> System.out.println (key + "=" + value));
+		return counts -> counts.toStream().foreach((key, value) -> System.out.println(key + "=" + value));
 	}
 
 }

@@ -26,4 +26,5 @@ class ClientController {
 	Map<String, String> hello(Principal principal) {
 		return Map.of("message", "hello from the resource server, " + principal.getName());
 	}
+
 }

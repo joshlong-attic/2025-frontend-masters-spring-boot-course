@@ -12,9 +12,9 @@ import java.util.Collection;
 @SpringBootApplication
 public class BasicsApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BasicsApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BasicsApplication.class, args);
+	}
 
 }
 
@@ -22,26 +22,25 @@ public class BasicsApplication {
 @ResponseBody
 class CustomerController {
 
-    private final JdbcClient db;
+	private final JdbcClient db;
 
-    CustomerController(JdbcClient db) {
-        this.db = db;
-    }
- 
-    @GetMapping ("/hello")
-    String hello (){
-        // refactor and rebuild
-        return "Hello World!" ;
-    }
-    
-    @GetMapping("/customers")
-    Collection<Customer> customers() {
-        return this.db
-                .sql("select * from customer")
-                .query((rs, _) -> new Customer(rs.getInt("id"),
-                        rs.getString("name")))
-                .list();
-    }
+	CustomerController(JdbcClient db) {
+		this.db = db;
+	}
+
+	@GetMapping("/hello")
+	String hello() {
+		// refactor and rebuild
+		return "Hello World!";
+	}
+
+	@GetMapping("/customers")
+	Collection<Customer> customers() {
+		return this.db.sql("select * from customer")
+			.query((rs, _) -> new Customer(rs.getInt("id"), rs.getString("name")))
+			.list();
+	}
+
 }
 
 record Customer(int id, String name) {
