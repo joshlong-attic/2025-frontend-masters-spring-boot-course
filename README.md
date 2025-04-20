@@ -1,6 +1,6 @@
 # Spring Boot Course for Frontend Masters - April 2025
 
-April 22 to 23, 2025 - 9:30am to 4:30pm Central Daylight Time
+April 22 to 23, 2025–9:30am to 4:30pm Central Daylight Time
 
 Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot ecosystem
 
