@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Users</title>
+
+</head>
+<body>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Users</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Street</th>
+        <th>Suite</th>
+        <th>City</th>
+        <th>Zipcode</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.name}">John Doe</td>
+        <td th:text="${user.username}">johnd</td>
+        <td th:text="${user.email}">john@example.com</td>
+        <td th:text="${user.address.street}">Main St</td>
+        <td th:text="${user.address.suite}">Apt. 4</td>
+        <td th:text="${user.address.city}">Springfield</td>
+        <td th:text="${user.address.zipcode}">12345</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+</body>
+</html>

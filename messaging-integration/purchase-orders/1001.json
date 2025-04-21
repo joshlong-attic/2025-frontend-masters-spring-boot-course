@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1001",
+  "country": "USA",
+  "lineItems": [
+    { "sku": "SKU-001", "productName": "Bluetooth Speaker", "quantity": 2, "unitPrice": 49.99 },
+    { "sku": "SKU-002", "productName": "USB-C Cable", "quantity": 3, "unitPrice": 9.99 }
+  ],
+  "total": 129.95
+}

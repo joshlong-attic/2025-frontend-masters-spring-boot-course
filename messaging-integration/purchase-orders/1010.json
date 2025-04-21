@@ -1,0 +1,8 @@
+{
+  "orderId": "PO-1010",
+  "country": "Italy",
+  "lineItems": [
+    { "sku": "SKU-016", "productName": "VR Headset", "quantity": 1, "unitPrice": 349.99 }
+  ],
+  "total": 349.99
+}

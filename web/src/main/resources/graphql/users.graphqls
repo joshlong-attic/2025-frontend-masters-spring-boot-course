@@ -1,0 +1,24 @@
+type User {
+    id : Int
+    name:String
+    username:String
+    email: String
+    address: Address
+}
+
+type Geo {
+    lat:Float
+    lng: Float
+}
+
+type Address {
+    street:String
+    suite:String
+    city:String
+    zipcode:String
+    geo: Geo
+}
+
+type Query {
+    users : [User]
+}

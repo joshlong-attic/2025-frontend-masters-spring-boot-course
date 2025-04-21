@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<script>
+			addEventListener('load' , async (e) => {
+				const result =  await window.fetch('/api/') 
+				const json = await result.json()
+				const name = json['name']
+				document.getElementsByClassName('name')[0].innerHTML = name 
+				
+				
+			})
+		</script>
+	</head>
+	<body>
+
+		 <div>hello, <strong><span class="name"></span></strong>!</div>
+
+	</body>
+
+</html>

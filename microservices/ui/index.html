@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Greetings 
+    </title>
+</head>
+<body>
+<div class="loading">
+    message: <span class="message"></span> 
+</div> 
+<script> 
+window.addEventListener('load', async (e) => {
+    console.log('moo')
+    const result = await ( await window.fetch('/api/hello')).json()
+    const msg = result ['message']
+    console.log ( msg )
+    document.getElementsByClassName('message') [0].innerHTML = msg 
+})
+</script>
+</body>
+</html>

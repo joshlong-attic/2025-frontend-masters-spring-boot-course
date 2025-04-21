@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1005",
+  "country": "Brazil",
+  "lineItems": [
+    { "sku": "SKU-008", "productName": "Laptop Stand", "quantity": 1, "unitPrice": 34.99 },
+    { "sku": "SKU-009", "productName": "Portable SSD 1TB", "quantity": 1, "unitPrice": 109.99 }
+  ],
+  "total": 144.98
+}

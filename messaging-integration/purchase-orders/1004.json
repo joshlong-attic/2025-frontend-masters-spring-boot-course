@@ -1,0 +1,9 @@
+{
+  "orderId": "PO-1004",
+  "country": "Canada",
+  "lineItems": [
+    { "sku": "SKU-006", "productName": "Smartphone Tripod", "quantity": 2, "unitPrice": 24.99 },
+    { "sku": "SKU-007", "productName": "LED Ring Light", "quantity": 1, "unitPrice": 39.99 }
+  ],
+  "total": 89.97
+}
