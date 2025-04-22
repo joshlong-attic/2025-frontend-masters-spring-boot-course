@@ -1,17 +1,18 @@
 package com.example.eip;
 
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.core.GenericHandler;
-import org.springframework.integration.core.GenericTransformer;
 import org.springframework.integration.dsl.DirectChannelSpec;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.json.JsonToObjectTransformer;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @SpringBootApplication
 public class EipApplication {
@@ -42,7 +41,7 @@ public class EipApplication {
 
 	@Bean
 	IntegrationFlow filesIntegrationFlow(MessageChannel orders,
-			@Value("file://${HOME}/Desktop/purchase-orders") File inputDir) {
+			@Value("file://${purchase-orders.directory}") File inputDir) {
 		var files = Files.inboundAdapter(inputDir).autoCreateDirectory(true);
 		return IntegrationFlow.from(files).channel(orders).get();
 	}
@@ -59,27 +58,33 @@ public class EipApplication {
 	// 9. write to RMQ
 
 	@Bean
-	IntegrationFlow ordersIntegrationFlow(MessageChannel orders) {
+	IntegrationFlow ordersIntegrationFlow(AmqpTemplate amqpTemplate, MessageChannel orders) {
 		return IntegrationFlow.from(orders)
 			.transform(new JsonToObjectTransformer(PurchaseOrder.class))
 			.split(PurchaseOrder.class, purchaseOrder -> {
+				System.out.println("========================================");
 				var set = new HashSet<ShippableLineItem>();
 				for (var lineItem : purchaseOrder.lineItems()) {
-					set.add(new ShippableLineItem(purchaseOrder, lineItem, "US".equals(purchaseOrder.country())));
+					set.add(new ShippableLineItem(purchaseOrder, lineItem, "US".equals(purchaseOrder.country()),
+							false));
 				}
 				return set;
 			})
 			.handle((GenericHandler<ShippableLineItem>) (payload, headers) -> {
-				System.out.println("shipping " + (payload.domestic() ? "domestic" : "international") + ": " + payload
+				System.out.println("\tshipping " + (payload.domestic() ? "domestic" : "international") + ": " + payload
 						+ " with heders : " + headers + ".");
-				return payload;
+				return new ShippableLineItem(payload.order(), payload.original(), payload.domestic(), true);
 			})
 			.aggregate(as -> as.correlationStrategy(message -> {
 				var shippableLineItem = (ShippableLineItem) message.getPayload();
 				return shippableLineItem.order().orderId();
 			}))
-			.handle((payload, headers) -> {
-				System.out.println("Processing: " + payload + " with heders : " + headers + ".");
+			.handle((GenericHandler<Collection<ShippableLineItem>>) (payload, headers) -> {
+				var order = payload.iterator().next().order();
+				System.out.println("\torder: [" + order + "]");
+				for (var sli : payload) {
+					System.out.println("\t\t" + sli.original() + " shipped: " + sli.shipped() + ".");
+				}
 				return null;
 			})
 			.get();
@@ -87,7 +92,7 @@ public class EipApplication {
 
 }
 
-record ShippableLineItem(PurchaseOrder order, LineItem original, boolean domestic) {
+record ShippableLineItem(PurchaseOrder order, LineItem original, boolean domestic, boolean shipped) {
 }
 
 record LineItem(String sku, String productName, int quantity, double unitPrice) {

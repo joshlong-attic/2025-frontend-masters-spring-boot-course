@@ -6,7 +6,8 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 
 ## Day 1
 
-09:30    (X) Desk check
+09:30    (X) What Success Looks Like
+09:50    (X) Desk check
 10:00    (X) Data oriented programming on the JVM
 10:30    (X) Beans
 11:00    (X) AOT and GraalVM
