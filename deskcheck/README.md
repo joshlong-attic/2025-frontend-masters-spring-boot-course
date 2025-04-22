@@ -3,6 +3,7 @@
 ## objectives
 * sdkman.io
 * .sdkmanrc
+* Docker
 * start.spring.io (PostgreSQL, Docker Compose, Testcontainers, web)
 * run on the JRE
 * run as a GraalVM native image
