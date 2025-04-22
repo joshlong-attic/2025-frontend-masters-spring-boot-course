@@ -5,7 +5,7 @@ April 22 to 23, 2025–9:30am to 4:30pm Central Daylight Time
 Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot ecosystem
 
 ## Day 1
-09:30    (X) Intro
+09:40    (X) Intro
 09:50    (X) Desk check
 10:00    (X) Data oriented programming on the JVM
 10:30    (X) Beans
