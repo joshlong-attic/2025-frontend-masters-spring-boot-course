@@ -1,6 +1,7 @@
 # Intro 
 
 ## objectives
+* `whoami`
 * production-worthy 
 * a five line service: start.spring.io:  `devtools`, `web`, `actuator`, `Data JDBC`, `PostgreSQL`,  `docker compose`, `graalvm`, buildpacks. 
 	* (remove Docker Compose maven dependency and manually start `compose.yml`; domain is `customer`; add `data.sql`,`schema.sql`; use `RouterFunction<ServerResponse>`; )
