@@ -35,7 +35,9 @@ public class AiApplication {
 
 	@Bean
 	McpSyncClient mcpSyncClient() {
-		var sseClientTransport = HttpClientSseClientTransport.builder("http://localhost:8081").build();
+		var sseClientTransport = HttpClientSseClientTransport
+				.builder("http://localhost:8081")
+				.build();
 		var mcp = McpClient.sync(sseClientTransport).build();
 		mcp.initialize();
 		return mcp;

@@ -16,10 +16,10 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 15:30    (X) Web Programming (MVC, Thymeleaf, REST, HATEOAS, RestClient, declarative HTTP interfaces, GraphQL, gRPC)
 
 ## Day 2
-09:30 	 (X) exercise: pull together an simple declarative client, an HTTP endpoint, and a database. 
+09:30 	 (X) exercise: pull together an HTTP client, an HTTP endpoint, and a database. 
 10:00 	 (X) Messaging and Integration
 11:00    (X) Architecting for Modularity
 12:30    (Lunch)
 13:30    (X) Microservices
-13:30    (X) AI
+13:30    (X) AI (AI, tool calling, MCP, [Docker Model Runner?](https://spring.io/blog/2025/04/10/spring-ai-docker-model-runner))
 15:30    (X) Security
