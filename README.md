@@ -13,14 +13,13 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 12:00    (Lunch)
 12:45    (X) Scalability
 14:30    (X) Data and Batch
-15:30    (X) Web Programming (MVC, Thymeleaf, REST, HATEOAS)
+15:30    (X) Web Programming (MVC, Thymeleaf, REST, HATEOAS, RestClient, declarative HTTP interfaces, GraphQL, gRPC)
 
 ## Day 2
-09:30    (X) Web Programming (cont’d) (RestClient, declarative HTTP interfaces, GraphQL, gRPC)
-10:30 Messaging and Integration
-11:30    (X) Architecting for Modularity
+09:30 	 (X) exercise: pull together an simple declarative client, an HTTP endpoint, and a database. 
+10:00 	 (X) Messaging and Integration
+11:00    (X) Architecting for Modularity
 12:30    (Lunch)
-13:30    (X) Cloud Native Java
+13:30    (X) Microservices
 13:30    (X) AI
-14:30    (X) Microservices
 15:30    (X) Security
