@@ -21,5 +21,6 @@ Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot 
 11:00    (X) Architecting for Modularity
 12:30    (Lunch)
 13:30    (X) Microservices
-13:30    (X) AI (AI, tool calling, MCP, [Docker Model Runner?](https://spring.io/blog/2025/04/10/spring-ai-docker-model-runner))
 15:30    (X) Security
+13:30    (X) AI (AI, tool calling, MCP, [Docker Model Runner?](https://spring.io/blog/2025/04/10/spring-ai-docker-model-runner))
+
