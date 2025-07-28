@@ -1,26 +1,31 @@
-# Spring Boot Course for Frontend Masters - April 2025
+# Enterprise Java with Spring Boot Course
+This is a companion repository for the [Enterprise Java with Spring Boot](https://frontendmasters.com/courses/spring-boot/) course on Frontend Masters.
+[![Frontend Masters](https://static.frontendmasters.com/assets/brand/logos/full.png)](https://frontendmasters.com/courses/spring-boot/)
 
-April 22 to 23, 2025–9:30am to 4:30pm Central Daylight Time
+## Course Setup
 
-Hi, Spring fans! In this course, we look at the amazing and awesome Spring Boot ecosystem
+The repo contains several projects demonstrating the capabilities of Spring Boot. Follow the setup instructions below to ensure you have the correct software and tools to follow along with the course.
 
-## Day 1
-09:40    (X) Intro
-09:50    (X) Desk check
-10:00    (X) Data oriented programming on the JVM
-10:30    (X) Beans
-11:00    (X) AOT and GraalVM
-12:00    (Lunch)
-12:45    (X) Scalability
-14:30    (X) Data and Batch
-15:30    (X) Web Programming (MVC, Thymeleaf, REST, HATEOAS, RestClient, declarative HTTP interfaces, GraphQL, gRPC)
+### Install SDKMAN and Java 24
+- https://sdkman.io/
+- `curl -s "https://get.sdkman.io" | bash`
+- `sdk install java 24-graalce`
+- `sdk default java 24-graalce`
 
-## Day 2
-09:30 	 (X) exercise: pull together an HTTP client, an HTTP endpoint, and a database. 
-10:00 	 (X) Messaging and Integration
-11:00    (X) Architecting for Modularity
-12:30    (Lunch)
-13:30    (X) Microservices
-15:30    (X) Security
-13:30    (X) AI (AI, tool calling, MCP, [Docker Model Runner?](https://spring.io/blog/2025/04/10/spring-ai-docker-model-runner))
+
+## Install & Run Docker
+- Install [Docker Desktop](https://www.docker.com/)
+
+
+## Clone the Repo and Run the Intro App
+Josh "speed runs" the creation of an application at the beginning of the course. The `intro` directory is a version of this application. You can use it to test your setup and ensure you have all the requirements:
+
+```bash
+git clone https://github.com/joshlong-attic/2025-frontend-masters-spring-boot-course
+cd 2025-frontend-masters-spring-boot-course/intro/demo
+docker compose up
+./mvnw spring-boot:run
+```
+
+Open localhost:8080/hello in a browser to test the application
 
